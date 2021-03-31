@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:yummy="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+             xmlns:combobox="clr-namespace:Syncfusion.XForms.ComboBox;assembly=Syncfusion.SfComboBox.XForms"
+             xmlns:local="clr-namespace:NcoVAppUpdate"
+             mc:Ignorable="d"
+             Visual="Material"
+             x:Class="NcoVAppUpdate.FeelingSick"
+             x:DataType="local:FeelingSickVM">
+    <ContentPage.BindingContext>
+        <local:FeelingSickVM/>
+    </ContentPage.BindingContext>
+    
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!--<BoxView Grid.Row="0" BackgroundColor="Red" Opacity=".1"/>
+            <BoxView Grid.Row="1" BackgroundColor="Red" Opacity=".1"/>-->
+
+
+            <yummy:PancakeView Grid.Row="0"
+                               Grid.Column="0"
+                               Grid.ColumnSpan="3"
+                               BackgroundColor="#212835"
+                               CornerRadius="0,0,45,45"
+                               Padding="0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height=".5*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Row="0"
+                           Grid.Column="0"
+                           Grid.ColumnSpan="2"
+                           VerticalOptions="Start"
+                           HorizontalOptions="Start"
+                           Text="SARS NCoV 2019"
+                           TextColor="White"
+                           FontFamily="SF-Compact-Text-Medium.otf#SF Compact Text Medium"
+                           FontSize="30"
+                           x:Name="labelTEST"
+                           Margin="10,0,0,0"/>
+
+                    <d:Frame Grid.Column="1" Grid.Row="0" Padding="0" HorizontalOptions="Fill" VerticalOptions="Center"
+                           BackgroundColor="White" CornerRadius="20" Margin="15,0,10,0">
+
+                        <combobox:SfComboBox BackgroundColor="White"
+                                             HeightRequest="40"
+                                             ShowBorder="False"
+                                             FontFamily="SF-UI-Display-Bold.otf#SF UI Display Bold"
+                                             TextSize="20"
+                                             TextColor="Black"
+                                             Text="Select Country"/>
+                    </d:Frame>
+
+                    <StackLayout Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2">
+                        <Label Text="Are you feeling sick?"
+                               TextColor="White"
+                               FontFamily="SF-UI-Display-Bold.otf#SF UI Display Bold"
+                               FontSize="30"
+                               Margin="10,0,0,0"/>
+
+                        <Label Text="If you feel sick with any of CoViD-19 symptoms, please call or message your health deparment for help."
+                               TextColor="White"
+                               FontFamily="SF-UI-Display-Regular.otf#SF UI Display Regular"
+                               FontSize="17"
+                               Margin="10,0,20,0"/>
+                    </StackLayout>
+
+                    <Button Grid.Column="0"
+                            Grid.Row="2"
+                            Text="Call Now"
+                            BackgroundColor="#FF3845"
+                            VerticalOptions="Start"
+                            CornerRadius="50"
+                            HeightRequest="60"
+                            FontSize="20"
+                            FontFamily="SF-UI-Display-Bold.otf#SF UI Display Bold"
+                            ImageSource="call.png"
+                            Command="{Binding Call}"
+                            Margin="10,0,0,0"/>
+
+                    <Button Grid.Column="1"
+                            Grid.Row="2"
+                            Text="Send SMS"
+                            CornerRadius="50"
+                            HeightRequest="60"
+                            FontSize="20"
+                            FontFamily="SF-UI-Display-Bold.otf#SF UI Display Bold"
+                            BackgroundColor="#4C77FC"
+                            VerticalOptions="Start"
+                            ImageSource="chat.png"
+                            Command="{Binding SMS}"
+                            Margin="10,0,10,0"/>
+                </Grid>
+            </yummy:PancakeView>
+
+            <Label Grid.Row="1"
+                   Grid.ColumnSpan="2"
+                   Text="Prevention"
+                   TextColor="Black"
+                   VerticalOptions="Start"
+                   FontSize="40"
+                   FontFamily="SF-UI-Display-Bold.otf#SF UI Display Bold"
+                   Margin="10,0,0,0"/>
+
+            <StackLayout Grid.Column="0" Grid.Row="1" VerticalOptions="Center" Margin="10,0,0,0">
+                <Image Source="social.png"
+                       Aspect="AspectFit"/>
+                <Label Text="Avoid close&#10;contact"
+                       TextColor="Black"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center"
+                       FontSize="25"
+                       FontFamily="SF-UI-Display-Bold.otf#SF UI Display Bold"/>
+            </StackLayout>
+
+            <StackLayout Grid.Column="1" Grid.Row="1" VerticalOptions="Center" Margin="0,0,0,0">
+                <Image Source="hand.png"
+                       Aspect="AspectFit"
+                       HeightRequest="110"/>
+                <Label Text="Clean your&#10;hands often"
+                       TextColor="Black"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center"
+                       FontSize="25"
+                       FontFamily="SF-UI-Display-Bold.otf#SF UI Display Bold"/>
+            </StackLayout>
+
+            <StackLayout Grid.Column="2" Grid.Row="1" VerticalOptions="Center" Margin="0,0,10,0">
+                <Image Source="facemask.jpg"
+                       Aspect="AspectFit"
+                       HeightRequest="110"/>
+                <Label Text="Wear a&#10;face mask"
+                       TextColor="Black"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center"
+                       FontSize="25"
+                       FontFamily="SF-UI-Display-Bold.otf#SF UI Display Bold"/>
+            </StackLayout>
+
+            <d:Image Grid.Column="0"
+                   Grid.Row="2"
+                   Grid.ColumnSpan="3"
+                   x:Name="maskUSAGE"/>
+
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
