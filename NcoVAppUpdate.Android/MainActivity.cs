@@ -1,18 +1,29 @@
-﻿using Android.App;
+﻿using Android;
+using Android.App;
 using Android.Content.PM;
+using Android.OS;
 using Android.Runtime;
 using Android.Views;
-using Android.OS;
-using Android;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
 using Microsoft.AppCenter.Distribute;
+using Prism;
+using Prism.Ioc;
+using Xamarin;
+using Xamarin.Forms;
+using Xamarin.Forms.Platform.Android;
+using Platform = Xamarin.Essentials.Platform;
 
 namespace NcoVAppUpdate.Droid
 {
-    [Activity(Label = "SARS NCoV 2019 Tracker", Icon = "@mipmap/ic_launcher", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation, ScreenOrientation = ScreenOrientation.Portrait)]
-    public class MainActivity : Xamarin.Forms.Platform.Android.FormsAppCompatActivity
+    [Activity(Label = "SARS NCoV 2019 Tracker",
+        Icon = "@mipmap/ic_launcher",
+        Theme = "@style/MainTheme",
+        MainLauncher = true,
+        ConfigurationChanges = ConfigChanges.ScreenSize |
+        ConfigChanges.Orientation, ScreenOrientation = ScreenOrientation.Portrait)]
+    public class MainActivity : FormsAppCompatActivity
     {
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -22,13 +33,10 @@ namespace NcoVAppUpdate.Droid
             base.OnCreate(savedInstanceState);
             AppCenter.Start("62472e61-0328-4252-a786-af51bb9b47ab", typeof(Analytics), typeof(Crashes), typeof(Distribute));
 
-
-            Xamarin.Forms.Forms.SetFlags(new string[] { "RadioButton_Experimental", "Expander_Experimental" });
-
-            Xamarin.Essentials.Platform.Init(this, savedInstanceState);
-            Xamarin.Forms.Forms.Init(this, savedInstanceState);
-            Xamarin.Forms.FormsMaterial.Init(this, savedInstanceState);
-            Xamarin.FormsMaps.Init(this, savedInstanceState);
+            Platform.Init(this, savedInstanceState);
+            Forms.Init(this, savedInstanceState);
+            FormsMaterial.Init(this, savedInstanceState);
+            FormsMaps.Init(this, savedInstanceState);
 
             if (Build.VERSION.SdkInt >= BuildVersionCodes.P)
             {
@@ -42,15 +50,17 @@ namespace NcoVAppUpdate.Droid
             {
 
             }
-            LoadApplication(new App());
-        } 
-        const int RequestLocationId = 0;
 
-        readonly string[] LocationPermissions =
+            LoadApplication(new App(new AndroidInitializer()));
+        }
+
+        private const int RequestLocationId = 0;
+        private readonly string[] LocationPermissions =
         {
              Manifest.Permission.AccessCoarseLocation,
              Manifest.Permission.AccessFineLocation
         };
+
         protected override void OnStart()
         {
             base.OnStart();
@@ -67,6 +77,7 @@ namespace NcoVAppUpdate.Droid
                 }
             }
         }
+
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
         {
             if (requestCode == RequestLocationId)
@@ -80,6 +91,14 @@ namespace NcoVAppUpdate.Droid
             {
                 base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
             }
+        }
+    }
+
+    public class AndroidInitializer : IPlatformInitializer
+    {
+        public void RegisterTypes(IContainerRegistry containerRegistry)
+        {
+            // Register any platform specific implementations
         }
     }
 }

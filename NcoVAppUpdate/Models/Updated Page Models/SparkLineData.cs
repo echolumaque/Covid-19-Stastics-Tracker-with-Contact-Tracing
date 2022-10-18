@@ -1,6 +1,4 @@
 ﻿using Newtonsoft.Json;
-using RestSharp;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
@@ -249,6 +247,7 @@ namespace NcoVAppUpdate
     {
         public int TotalDeaths { get; set; }
     }
+
     public class ViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
@@ -256,7 +255,8 @@ namespace NcoVAppUpdate
         public List<ActiveCasesModel> ActiveCasesModelss { get; set; }
         public List<TotalRecoveriesModel> TotalRecoveriesModelss { get; set; }
         public List<TotalDeathsModel> TotalDeathsModelss { get; set; }
-        string totalCases;
+
+        private string totalCases;
         public string TotalCases
         {
             get => totalCases;
@@ -269,7 +269,8 @@ namespace NcoVAppUpdate
                 }
             }
         }
-        string activeCases;
+
+        private string activeCases;
         public string ActiveCases
         {
             get => activeCases;
@@ -282,11 +283,12 @@ namespace NcoVAppUpdate
                 }
             }
         }
-        string recoveries;
+
+        private string recoveries;
         public string Recoveries
         {
             get => recoveries;
-            set 
+            set
             {
                 if (recoveries != value)
                 {
@@ -295,7 +297,8 @@ namespace NcoVAppUpdate
                 }
             }
         }
-        string deaths;
+
+        private string deaths;
         public string TotalDeaths
         {
             get => deaths;
@@ -308,7 +311,8 @@ namespace NcoVAppUpdate
                 }
             }
         }
-        string newCases;
+
+        private string newCases;
         public string NewCases
         {
             get => newCases;
@@ -321,7 +325,8 @@ namespace NcoVAppUpdate
                 }
             }
         }
-        string newDeaths;
+
+        private string newDeaths;
         public string NewDeaths
         {
             get => newDeaths;
@@ -334,7 +339,8 @@ namespace NcoVAppUpdate
                 }
             }
         }
-        string updateTime;
+
+        private string updateTime;
         public string UpdateTime
         {
             get => updateTime;
@@ -347,7 +353,8 @@ namespace NcoVAppUpdate
                 }
             }
         }
-        bool isBusy;
+
+        private bool isBusy;
         public bool IsBusy
         {
             get => isBusy;
@@ -363,17 +370,20 @@ namespace NcoVAppUpdate
         public ViewModel()
         {
             Notify = new Command(async () => await SendNotif());
-            SearchCountry = new Command(async () => await CountryStatsAsync());
+            //SearchCountry = new Command(async () => await CountryStatsAsync());
+            // todo: here
         }
- 
+
         public Command Notify { get; }
-        async Task SendNotif()
+
+        private async Task SendNotif()
         {
-            bool answer = await Application.Current.MainPage.DisplayAlert("", "Do you wamt to get daily notifications for Philippines' COVID - 19 tally?", "Yes", "Cancel notifications");
+            var answer = await Application.Current.MainPage.DisplayAlert("", "Do you wamt to get daily notifications for Philippines' COVID - 19 tally?", "Yes", "Cancel notifications");
             if (answer)
             {
                 DependencyService.Get<InterfaceLocalNotif>().Alarm();
             }
+
             if (!answer)
             {
                 DependencyService.Get<InterfaceLocalNotif>().CancelNotifications();
@@ -381,8 +391,7 @@ namespace NcoVAppUpdate
             }
         }
 
-
-        object selectedItem;
+        private object selectedItem;
         public object SelectedItem
         {
             get => selectedItem;
@@ -397,34 +406,35 @@ namespace NcoVAppUpdate
         }
 
         public Command SearchCountry { get; }
-        async Task CountryStatsAsync()
-        {
-            try
-            {
-                IsBusy = true;
-                RestClient client = new RestClient(string.Format("https://covid-193.p.rapidapi.com/statistics?country={0}", SelectedItem.ToString()));
-                RestRequest request = new RestRequest(Method.GET);
-                request.AddHeader("x-rapidapi-host", "covid-193.p.rapidapi.com");
-                request.AddHeader("x-rapidapi-key", "d7b1359095msh2f3d1cf03fadfc9p17d1dcjsnb8086ea2665c");
-                request.RequestFormat = DataFormat.Json;
-                IRestResponse Response = await client.ExecuteAsync(request);
-                CovidStats model = JsonConvert.DeserializeObject<CovidStats>(Response.Content);
+        //todo: here
+        //private async Task CountryStatsAsync()
+        //{
+        //    try
+        //    {
+        //        IsBusy = true;
+        //        var client = new RestClient(string.Format("https://covid-193.p.rapidapi.com/statistics?country={0}", SelectedItem.ToString()));
+        //        var request = new RestRequest(Method.GET);
+        //        request.AddHeader("x-rapidapi-host", "covid-193.p.rapidapi.com");
+        //        request.AddHeader("x-rapidapi-key", "d7b1359095msh2f3d1cf03fadfc9p17d1dcjsnb8086ea2665c");
+        //        request.RequestFormat = DataFormat.Json;
+        //        IRestResponse Response = await client.ExecuteAsync(request);
+        //        var model = JsonConvert.DeserializeObject<CovidStats>(Response.Content);
 
-                TotalCases = model.Response[0].Cases.Total.ToString("#,###");
-                ActiveCases = model.Response[0].Cases.Active.ToString("#,###");
-                Recoveries = model.Response[0].Cases.Recovered.ToString("#,###");
-                TotalDeaths = model.Response[0].Deaths.Total.ToString("#,###");
-                UpdateTime = "Last update: " +  model.Response[0].Time.ToString("MMMM dd, yyyy hh: mm:ss tt") + " GMT +06:00";
-                NewCases = model.Response[0].Cases.New;
-                NewDeaths = model.Response[0].Deaths.New;
+        //        TotalCases = model.Response[0].Cases.Total.ToString("#,###");
+        //        ActiveCases = model.Response[0].Cases.Active.ToString("#,###");
+        //        Recoveries = model.Response[0].Cases.Recovered.ToString("#,###");
+        //        TotalDeaths = model.Response[0].Deaths.Total.ToString("#,###");
+        //        UpdateTime = "Last update: " + model.Response[0].Time.ToString("MMMM dd, yyyy hh: mm:ss tt") + " GMT +06:00";
+        //        NewCases = model.Response[0].Cases.New;
+        //        NewDeaths = model.Response[0].Deaths.New;
 
-                await Task.Delay(6000);
-                IsBusy = false;
-            }
-            catch (Exception)
-            {
-                await Application.Current.MainPage.DisplayAlert("", "Please check your internet connection.", "Okay");
-            }
-        }
+        //        await Task.Delay(6000);
+        //        IsBusy = false;
+        //    }
+        //    catch (Exception)
+        //    {
+        //        await Application.Current.MainPage.DisplayAlert("", "Please check your internet connection.", "Okay");
+        //    }
+        //}
     }
 }
