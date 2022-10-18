@@ -119,9 +119,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Local Notif\LocalNotif.cs" />
     <Compile Include="MainActivity.cs" />
-    <Compile Include="Local Notif\NotifBroadcastReceiver.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

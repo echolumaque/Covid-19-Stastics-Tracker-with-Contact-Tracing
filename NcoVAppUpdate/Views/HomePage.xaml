@@ -7,281 +7,243 @@
              xmlns:prism="http://prismlibrary.com"
              xmlns:sparkline="clr-namespace:Syncfusion.SfSparkline.XForms;assembly=Syncfusion.SfSparkline.XForms"
              xmlns:vm="clr-namespace:NcoVAppUpdate.View_Model"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              prism:ViewModelLocator.AutowireViewModel="True"
              x:DataType="vm:HomePageViewModel"
              Visual="Material">
 
-    <!--<ContentPage.ToolbarItems>
-        <ToolbarItem Command="{Binding Notify}"
-                     IconImageSource="bellicon.png"
+    <ContentPage.ToolbarItems>
+        <ToolbarItem IconImageSource="bellicon.png"
                      Order="Primary" />
-    </ContentPage.ToolbarItems>-->
+    </ContentPage.ToolbarItems>
 
-    <ContentPage.Content>
-        <Grid ColumnDefinitions="*,*"
-              RowDefinitions="*,*,*">
-            <Label Grid.Row="2"
-                   Grid.ColumnSpan="2"
-                   Margin="10,0,10,0"
-                   FontAttributes="Italic"
-                   FontSize="18"
-                   Text="Note: Application may seem hanging due to fetching data, please wait."
-                   VerticalOptions="End" />
+    <Grid ColumnDefinitions="*,*"
+          RowDefinitions="*,*,*">
+        <BoxView Grid.Row="1"
+                 Grid.RowSpan="2"
+                 Grid.Column="0"
+                 Grid.ColumnSpan="2"
+                 Margin="10,0,10,40"
+                 BackgroundColor="DarkGray"
+                 Opacity=".2" />
 
-            <BoxView Grid.Row="1"
-                     Grid.RowSpan="2"
-                     Grid.Column="0"
+        <Image Grid.Row="0"
+               Grid.Column="0"
+               Grid.ColumnSpan="2"
+               Aspect="Fill"
+               HorizontalOptions="FillAndExpand"
+               Source="upper.png"
+               VerticalOptions="Start" />
+
+        <Label x:Name="labelTEST"
+               Grid.Row="0"
+               Grid.ColumnSpan="2"
+               Margin="15,10,0,0"
+               FontFamily="Medium"
+               FontSize="25"
+               Text="SARS NCoV 2019 Tracker"
+               TextColor="White"
+               VerticalOptions="Start" />
+        <StackLayout Grid.Row="0"
                      Grid.ColumnSpan="2"
-                     Margin="10,0,10,40"
-                     BackgroundColor="DarkGray"
-                     Opacity=".2" />
+                     VerticalOptions="Center">
+            <Label Margin="14,0"
+                   Text="Select country"
+                   TextColor="White" />
 
-            <Image Grid.Row="0"
-                   Grid.Column="0"
-                   Grid.ColumnSpan="2"
-                   Aspect="Fill"
-                   HorizontalOptions="FillAndExpand"
-                   Source="upper.png"
-                   VerticalOptions="Start" />
+            <combobox:SfComboBox Margin="10,0"
+                                 DataSource="{Binding Countries}"
+                                 DisplayMemberPath="Response"
+                                 FontAttributes="Bold"
+                                 FontFamily="Bold"
+                                 HeightRequest="50"
+                                 HorizontalOptions="StartAndExpand"
+                                 SelectedItem="{Binding SelectedCountry}"
+                                 ShowBorder="False"
+                                 ShowClearButton="False"
+                                 TextColor="White"
+                                 TextSize="20"
+                                 VerticalOptions="Center">
+                <combobox:SfComboBox.Behaviors>
+                    <xct:EventToCommandBehavior Command="{Binding SelectedCountryChangedCmd}"
+                                                EventName="SelectionChanged" />
+                </combobox:SfComboBox.Behaviors>
+            </combobox:SfComboBox>
 
-            <Label x:Name="labelTEST"
-                   Grid.Row="0"
-                   Grid.ColumnSpan="2"
-                   Margin="15,10,0,0"
+            <Label Margin="10,0"
                    FontFamily="Medium"
-                   FontSize="25"
-                   Text="SARS NCoV 2019 Tracker"
-                   TextColor="White"
-                   VerticalOptions="Start" />
-            <StackLayout Grid.Row="0"
-                         Grid.ColumnSpan="2"
-                         VerticalOptions="Center">
-                <combobox:SfComboBox Margin="10,0"
-                                     FontAttributes="Bold"
-                                     FontFamily="Bold"
-                                     HeightRequest="50"
-                                     HorizontalOptions="StartAndExpand"
-                                     ItemsSource="{Binding Countries}"
-                                     SelectedItem="{Binding SelectedCountry}"
-                                     ShowBorder="False"
-                                     Text="Select Country"
-                                     TextColor="White"
-                                     TextSize="30"
-                                     VerticalOptions="Center" />
+                   FontSize="15"
+                   HorizontalOptions="End"
+                   Text="{Binding UpdateTime, StringFormat='Last update: {0}'}"
+                   TextColor="White" />
+        </StackLayout>
 
-                <Label Margin="10,0,0,0"
+
+        <Frame Grid.Row="1"
+               Grid.RowSpan="1"
+               Grid.Column="0"
+               Margin="10,-60,10,60"
+               Padding="10,0"
+               HasShadow="True">
+            <Grid RowDefinitions="*,*,*">
+
+                <Label Grid.Row="0"
                        FontFamily="Medium"
-                       FontSize="15"
-                       Text="{Binding UpdateTime}"
-                       TextColor="White" />
+                       FontSize="22"
+                       HorizontalOptions="Start"
+                       Text="Total"
+                       VerticalOptions="End" />
 
-                <Button Margin="0,0,10,0"
-                        BackgroundColor="#212835"
-                        BorderColor="#212835"
-                        Clicked="Button_Clicked"
-                        Command="{Binding SearchCountry}"
-                        HorizontalOptions="End"
-                        Text="Search"
-                        VerticalOptions="End" />
-            </StackLayout>
+                <Label Grid.Row="1"
+                       TextColor="#E91D52"
+                       VerticalOptions="End">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <FormattedString.Spans>
+                                <Span FontFamily="Bold"
+                                      FontSize="30"
+                                      Text="{Binding TotalCases}" />
+                                <Span Text="&#10;" />
+                                <Span FontFamily="Regular"
+                                      FontSize="15"
+                                      Text="{Binding NewCases}" />
+                            </FormattedString.Spans>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
 
+                <sparkline:SfAreaSparkline Grid.Row="2"
+                                           Margin="10,0,-5,0"
+                                           ItemsSource="{Binding TotalCasesSparkline}"
+                                           MinimumYValue="0"
+                                           StrokeColor="#E91D52"
+                                           StrokeWidth="3"
+                                           YBindingPath="Value"
+                                           Color="#11E91D52" />
+            </Grid>
+        </Frame>
 
-            <Frame Grid.Row="1"
-                   Grid.RowSpan="1"
-                   Grid.Column="0"
-                   Margin="10,-60,10,60"
-                   Padding="0"
-                   HasShadow="True">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
+        <Frame Grid.Row="1"
+               Grid.RowSpan="1"
+               Grid.Column="1"
+               Margin="10,-60,10,60"
+               Padding="10,0"
+               HasShadow="True">
+            <Grid RowDefinitions="*,*,*">
+                <Label Grid.Row="0"
+                       FontFamily="Medium"
+                       FontSize="22"
+                       HorizontalOptions="Start"
+                       Text="Active"
+                       VerticalOptions="End" />
 
-                    <Label Grid.Row="0"
-                           Margin="10,10,0,0"
-                           FontFamily="Medium"
-                           FontSize="30"
-                           HorizontalOptions="Start"
-                           Text="CONFIRMED"
-                           VerticalOptions="End" />
+                <Label Grid.Row="1"
+                       FontFamily="Bold"
+                       FontSize="30"
+                       HorizontalOptions="Start"
+                       Text="{Binding ActiveCases}"
+                       TextColor="#0E73DF"
+                       VerticalOptions="Center" />
 
-                    <Label x:Name="newTOTAL"
-                           Grid.Row="1"
-                           Margin="0,0,10,0"
-                           FontFamily="SF-UI-Display-Regular.otf#SF-UI-Display-Regular"
-                           FontSize="20"
-                           HorizontalOptions="End"
-                           Text="{Binding NewCases}"
-                           TextColor="#E91D52"
-                           VerticalOptions="Center" />
+                <sparkline:SfAreaSparkline Grid.Row="2"
+                                           Margin="10,0,-5,0"
+                                           ItemsSource="{Binding ActiveCasesSparkline}"
+                                           MinimumYValue="0"
+                                           StrokeColor="#0E73DF"
+                                           StrokeWidth="3"
+                                           YBindingPath="Value"
+                                           Color="#110E73DF" />
 
+            </Grid>
+        </Frame>
 
-                    <Label x:Name="labelTOTALCASES"
-                           Grid.Row="1"
-                           Margin="10,0,0,0"
-                           FontFamily="Bold"
-                           FontSize="40"
-                           HorizontalOptions="Start"
-                           Text="{Binding TotalCases}"
-                           TextColor="#E91D52"
-                           VerticalOptions="Center" />
+        <Frame Grid.Row="2"
+               Grid.RowSpan="1"
+               Grid.Column="0"
+               Margin="10,-40,10,60"
+               Padding="10,0"
+               HasShadow="True">
+            <Grid RowDefinitions="*,*,*">
 
-                    <sparkline:SfAreaSparkline x:Name="sparklineTOTAL"
-                                               Grid.Row="2"
-                                               Margin="10,0,-5,0"
-                                               MinimumYValue="0"
-                                               StrokeColor="#E91D52"
-                                               StrokeWidth="3"
-                                               Color="#11E91D52" />
-                </Grid>
-            </Frame>
+                <Label Grid.Row="0"
+                       FontFamily="Medium"
+                       FontSize="22"
+                       HorizontalOptions="Start"
+                       Text="Recovered"
+                       VerticalOptions="End" />
 
-            <Frame Grid.Row="1"
-                   Grid.RowSpan="1"
-                   Grid.Column="1"
-                   Margin="10,-60,10,60"
-                   Padding="0"
-                   HasShadow="True">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
+                <Label Grid.Row="1"
+                       FontFamily="Bold"
+                       FontSize="30"
+                       HorizontalOptions="Start"
+                       Text="{Binding Recoveries}"
+                       TextColor="#33A142"
+                       VerticalOptions="Center" />
 
-                    <Label Grid.Row="0"
-                           Margin="10,10,0,0"
-                           FontFamily="Medium"
-                           FontSize="30"
-                           HorizontalOptions="Start"
-                           Text="ACTIVE"
-                           VerticalOptions="End" />
+                <sparkline:SfAreaSparkline Grid.Row="2"
+                                           Margin="10,0,-5,0"
+                                           ItemsSource="{Binding TotalRecoveriesSparkline}"
+                                           MinimumYValue="0"
+                                           StrokeColor="#33A142"
+                                           StrokeWidth="3"
+                                           YBindingPath="Value"
+                                           Color="#1133A142" />
+            </Grid>
+        </Frame>
 
-                    <Label x:Name="labelACTIVECASES"
-                           Grid.Row="1"
-                           Margin="10,0,0,0"
-                           FontFamily="Bold"
-                           FontSize="40"
-                           HorizontalOptions="Start"
-                           Text="{Binding ActiveCases}"
-                           TextColor="#0E73DF"
-                           VerticalOptions="Center" />
+        <Frame Grid.Row="2"
+               Grid.RowSpan="1"
+               Grid.Column="1"
+               Margin="10,-40,10,60"
+               Padding="10,0"
+               HasShadow="True">
+            <Grid RowDefinitions="*,*,*">
 
-                    <sparkline:SfAreaSparkline x:Name="sparkLINEACTIVE"
-                                               Grid.Row="2"
-                                               Margin="10,0,-5,0"
-                                               MinimumYValue="0"
-                                               StrokeColor="#0E73DF"
-                                               StrokeWidth="3"
-                                               Color="#110E73DF" />
+                <Label Grid.Row="0"
+                       Margin="10,10,0,0"
+                       FontFamily="Medium"
+                       FontSize="22"
+                       HorizontalOptions="Start"
+                       Text="Deceased"
+                       VerticalOptions="End" />
 
-                </Grid>
-            </Frame>
+                <Label Grid.Row="1"
+                       TextColor="#A5A5A5"
+                       VerticalOptions="End">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <FormattedString.Spans>
+                                <Span FontFamily="Bold"
+                                      FontSize="30"
+                                      Text="{Binding Deaths}" />
+                                <Span Text="&#10;" />
+                                <Span FontFamily="Regular"
+                                      FontSize="15"
+                                      Text="{Binding NewDeaths}" />
+                            </FormattedString.Spans>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
 
-            <Frame Grid.Row="2"
-                   Grid.RowSpan="1"
-                   Grid.Column="0"
-                   Margin="10,-40,10,40"
-                   Padding="0"
-                   HasShadow="True">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
+                <sparkline:SfAreaSparkline Grid.Row="2"
+                                           Margin="10,0,-5,0"
+                                           ItemsSource="{Binding TotalDeathsSparkline}"
+                                           MinimumYValue="0"
+                                           StrokeColor="#A5A5A5"
+                                           StrokeWidth="3"
+                                           YBindingPath="Value"
+                                           Color="#11A5A5A5" />
+            </Grid>
+        </Frame>
 
-                    <Label Grid.Row="0"
-                           Margin="10,10,0,0"
-                           FontFamily="Medium"
-                           FontSize="30"
-                           HorizontalOptions="Start"
-                           Text="RECOVERED"
-                           VerticalOptions="End" />
-
-                    <Label x:Name="labelRECOVERIES"
-                           Grid.Row="1"
-                           Margin="10,0,0,0"
-                           FontFamily="Bold"
-                           FontSize="40"
-                           HorizontalOptions="Start"
-                           Text="{Binding Recoveries}"
-                           TextColor="#33A142"
-                           VerticalOptions="Center" />
-
-                    <sparkline:SfAreaSparkline x:Name="sparkLINERECOVER"
-                                               Grid.Row="2"
-                                               Margin="10,0,-5,0"
-                                               MinimumYValue="0"
-                                               StrokeColor="#33A142"
-                                               StrokeWidth="3"
-                                               Color="#1133A142" />
-                </Grid>
-            </Frame>
-
-            <Frame Grid.Row="2"
-                   Grid.RowSpan="1"
-                   Grid.Column="1"
-                   Margin="10,-40,10,40"
-                   Padding="0"
-                   HasShadow="True">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-
-                    <Label Grid.Row="0"
-                           Margin="10,10,0,0"
-                           FontFamily="Medium"
-                           FontSize="30"
-                           HorizontalOptions="Start"
-                           Text="DECEASED"
-                           VerticalOptions="End" />
-
-                    <Label x:Name="labelDEATHS"
-                           Grid.Row="1"
-                           Margin="10,0,0,0"
-                           FontFamily="Bold"
-                           FontSize="40"
-                           HorizontalOptions="Start"
-                           Text="{Binding TotalDeaths}"
-                           TextColor="#A5A5A5"
-                           VerticalOptions="Center" />
-
-                    <Label x:Name="newDEATH"
-                           Grid.Row="1"
-                           Margin="0,0,10,0"
-                           FontFamily="SF-UI-Display-Regular.otf#SF-UI-Display-Regular"
-                           FontSize="20"
-                           HorizontalOptions="End"
-                           Text="{Binding NewDeaths}"
-                           TextColor="#A5A5A5"
-                           VerticalOptions="Center" />
-
-                    <sparkline:SfAreaSparkline x:Name="sparklineDEATH"
-                                               Grid.Row="2"
-                                               Margin="10,0,-5,0"
-                                               MinimumYValue="0"
-                                               StrokeColor="#A5A5A5"
-                                               StrokeWidth="3"
-                                               Color="#11A5A5A5" />
-                </Grid>
-            </Frame>
-            <busy:SfBusyIndicator Title="Fetching data.."
-                                  Grid.Row="0"
-                                  Grid.RowSpan="3"
-                                  Grid.Column="0"
-                                  Grid.ColumnSpan="2"
-                                  AnimationType="Ball"
-                                  HorizontalOptions="Center"
-                                  IsBusy="{Binding IsBusy}"
-                                  VerticalOptions="Center"
-                                  Duration="2" />
-        </Grid>
-    </ContentPage.Content>
-
+        <busy:SfBusyIndicator Title="Fetching data.."
+                              Grid.Row="0"
+                              Grid.RowSpan="3"
+                              Grid.Column="0"
+                              Grid.ColumnSpan="2"
+                              AnimationType="Ball"
+                              HorizontalOptions="Center"
+                              IsBusy="{Binding IsBusy}"
+                              VerticalOptions="Center" />
+    </Grid>
 </ContentPage>

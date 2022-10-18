@@ -12,24 +12,19 @@ namespace NcoVAppUpdate
 {
     public partial class App
     {
-        public App(IPlatformInitializer initializer) : base(initializer)
-        {
-            MainPage = new AppShell();
-            SyncfusionLicenseProvider.RegisterLicense("NzQyNDk1QDMyMzAyZTMzMmUzMFVGcnNZSWZMMWkrU2VBa1VGQ3ZrYnc3YURLajRxZ21rWWcvSzkzNW9NWkE9");
-        }
+        public App(IPlatformInitializer initializer) : base(initializer) { }
 
         protected override async void OnInitialized()
         {
             InitializeComponent();
-            //await NavigationService.NavigateAsync("NavigationPage/MainPage");
+            SyncfusionLicenseProvider.RegisterLicense("NzQyNDk1QDMyMzAyZTMzMmUzMFVGcnNZSWZMMWkrU2VBa1VGQ3ZrYnc3YURLajRxZ21rWWcvSzkzNW9NWkE9");
+            await NavigationService.NavigateAsync("NavigationPage/HomePage");
+            ((NavigationPage)Application.Current.MainPage).BarBackgroundColor = Color.FromHex("#212835");
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            //containerRegistry.RegisterSingleton<IAppInfo, AppInfoImplementation>();
-
-            //containerRegistry.RegisterForNavigation<NavigationPage>();
-            //containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
+            containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<HomePage, HomePageViewModel>();
         }
     }

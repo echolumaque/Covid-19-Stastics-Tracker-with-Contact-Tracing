@@ -1,7 +1,7 @@
 ﻿using Xamarin.Essentials;
 using Xamarin.Forms;
 
-namespace NcoVAppUpdate
+namespace NcoVAppUpdate.ViewModels
 {
     public class AppShellVM
     {
@@ -9,14 +9,17 @@ namespace NcoVAppUpdate
         {
             DeveloperCredits = new Command(OpenFBNiEcho);
             Credits = new Command(FreepikSite);
-        }  
+        }
+
+        public Command Credits { get; }
         public Command DeveloperCredits { get; }
-        void OpenFBNiEcho()
+
+        private void OpenFBNiEcho()
         {
             Launcher.OpenAsync("https://www.facebook.com/TataEchooo");
         }
-        public Command Credits { get; }
-        void FreepikSite()
+
+        private void FreepikSite()
         {
             Launcher.OpenAsync("https://www.freepik.com/");
         }

@@ -4,8 +4,9 @@
        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
        xmlns:d="http://xamarin.com/schemas/2014/forms/design"
        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-       xmlns:pages="clr-namespace:NcoVAppUpdate"
-       x:DataType="pages:AppShellVM"
+       xmlns:pages="clr-namespace:NcoVAppUpdate.Views"
+       xmlns:vm="clr-namespace:NcoVAppUpdate.ViewModels"
+       x:DataType="vm:AppShellVM"
        FlyoutIcon="hamburger.png"
        Shell.BackgroundColor="#212835"
        Shell.NavBarHasShadow="True"
@@ -13,7 +14,7 @@
        mc:Ignorable="d">
 
     <Shell.BindingContext>
-        <pages:AppShellVM />
+        <vm:AppShellVM />
     </Shell.BindingContext>
 
     <Shell.FlyoutHeader>
@@ -23,14 +24,7 @@
     <FlyoutItem Title="International Cases"
                 Icon="world.png">
         <Tab>
-            <ShellContent ContentTemplate="{DataTemplate pages:UpdatedPage}" />
-        </Tab>
-    </FlyoutItem>
-
-    <FlyoutItem Title="Contact Tracing"
-                Icon="virus.png">
-        <Tab>
-            <ShellContent ContentTemplate="{DataTemplate pages:ContactTracing}" />
+            <ShellContent ContentTemplate="{DataTemplate pages:HomePage}" />
         </Tab>
     </FlyoutItem>
 
