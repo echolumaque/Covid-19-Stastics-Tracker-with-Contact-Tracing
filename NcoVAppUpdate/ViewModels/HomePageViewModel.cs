@@ -93,10 +93,10 @@ namespace NcoVAppUpdate.View_Model
             var totalRecoveriesSparkline = new List<Sparkline>();
             foreach (var item in casesList)
             {
-                activeCasesSparkline.Add(new Sparkline { Dummy = 0, Value = item.Response.First().Cases.Active });
-                totalCasesSparkline.Add(new Sparkline { Dummy = 0, Value = item.Response.First().Cases.Total });
-                totalDeathsSparkline.Add(new Sparkline { Dummy = 0, Value = item.Response.First().Deaths.Total });
-                totalRecoveriesSparkline.Add(new Sparkline { Dummy = 0, Value = item.Response.First().Cases.Recovered });
+                activeCasesSparkline.Add(new Sparkline { Value = item.Response.First().Cases.Active });
+                totalCasesSparkline.Add(new Sparkline { Value = item.Response.First().Cases.Total });
+                totalDeathsSparkline.Add(new Sparkline { Value = item.Response.First().Deaths.Total });
+                totalRecoveriesSparkline.Add(new Sparkline { Value = item.Response.First().Cases.Recovered });
             }
 
             ActiveCasesSparkline = activeCasesSparkline;
