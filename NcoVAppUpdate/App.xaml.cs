@@ -1,31 +1,31 @@
-﻿using Xamarin.Forms;
-using Microsoft.AppCenter;
-using Microsoft.AppCenter.Analytics;
-using Microsoft.AppCenter.Crashes;
-using Microsoft.AppCenter.Distribute;
+﻿using NcoVAppUpdate.View_Model;
+using NcoVAppUpdate.Views;
+using Prism;
+using Prism.Ioc;
+using Syncfusion.Licensing;
+using Xamarin.Forms;
 
+[assembly: ExportFont("SF-Compact-Text-Medium.otf", Alias = "Medium")]
+[assembly: ExportFont("SF-UI-Display-Bold.otf", Alias = "Bold")]
+[assembly: ExportFont("SF-UI-Display-Regular.otf", Alias = "Regular")]
 namespace NcoVAppUpdate
 {
-    public partial class App : Application
+    public partial class App
     {
-        public App()
+        public App(IPlatformInitializer initializer) : base(initializer) { }
+
+        protected override async void OnInitialized()
         {
             InitializeComponent();
-            MainPage = new AppShell();
-            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Mjc0OTkwQDMxMzgyZTMxMmUzMGRSbEpoT2ZGOVppVVg5Y3ZJRm1SS01KU2d0eDZ4bTRSSVhBRllOTk1yd0E9");
+            SyncfusionLicenseProvider.RegisterLicense("NzQyNDk1QDMyMzAyZTMzMmUzMFVGcnNZSWZMMWkrU2VBa1VGQ3ZrYnc3YURLajRxZ21rWWcvSzkzNW9NWkE9");
+            await NavigationService.NavigateAsync("NavigationPage/HomePage");
+            ((NavigationPage)Application.Current.MainPage).BarBackgroundColor = Color.FromHex("#212835");
         }
 
-        protected override void OnStart()
+        protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            AppCenter.Start("62472e61-0328-4252-a786-af51bb9b47ab",  typeof(Analytics), typeof(Crashes), typeof(Distribute));
-        }
-
-        protected override void OnSleep()
-        {
-        }
-
-        protected override void OnResume()
-        {
+            containerRegistry.RegisterForNavigation<NavigationPage>();
+            containerRegistry.RegisterForNavigation<HomePage, HomePageViewModel>();
         }
     }
 }
